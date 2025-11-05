@@ -1,7 +1,7 @@
 ```{=html}
 <p align="center">
 ```
-`<img src="https://raw.githubusercontent.com/ksydoruk1508/stable/main/assets/stable-header.png" alt="Stable Banner" width="800">`{=html}
+`<img src="https://raw.githubusercontent.com/ksydoruk1508/stable/main/assets/stable-header.png" alt="Stable Banner" width="820">`{=html}
 ```{=html}
 </p>
 ```
@@ -17,7 +17,7 @@
 ```
 `<img src="https://img.shields.io/badge/Testnet-Live-purple?style=for-the-badge">`{=html}
 `<img src="https://img.shields.io/badge/OS-Ubuntu%20%2F%20Debian-blue?style=for-the-badge">`{=html}
-`<img src="https://img.shields.io/badge/Time-~5%20min-green?style=for-the-badge">`{=html}
+`<img src="https://img.shields.io/badge/Setup~5min-green?style=for-the-badge">`{=html}
 ```{=html}
 </p>
 ```
@@ -33,29 +33,27 @@ This script lets you deploy and manage a full node in minutes --- fully
 automated and beginner‑friendly.
 
 ✅ Server preparation\
-✅ Binary install\
+✅ Binary installation\
 ✅ Config patching\
-✅ Snapshot restore\
-✅ Systemd service\
-✅ Health Check UI
+✅ Snapshot loading\
+✅ Systemd integration\
+✅ Health‑check interface
 
 ------------------------------------------------------------------------
 
 ## ✅ System Requirements
 
-  Component         Minimum
-  ----------------- -----------------
-  **CPU**           4 cores
-  **RAM**           8 GB
-  **Storage**       500 GB NVMe/SSD
-  **OS**            Ubuntu / Debian
-  **Permissions**   root
+  Component     Minimum
+  ------------- -----------------
+  CPU           4 cores
+  RAM           8 GB
+  Storage       500 GB NVMe/SSD
+  OS            Ubuntu / Debian
+  Permissions   root
 
 ------------------------------------------------------------------------
 
 ## ⚡ Quick Start
-
-Run the installer:
 
 ``` bash
 wget -q -O stable.sh https://raw.githubusercontent.com/ksydoruk1508/stable/refs/heads/main/stable.sh && sudo chmod +x stable.sh && ./stable.sh
@@ -63,54 +61,37 @@ wget -q -O stable.sh https://raw.githubusercontent.com/ksydoruk1508/stable/refs/
 
 ------------------------------------------------------------------------
 
-## 🚀 Step-by-step
+## 🚀 Step‑by‑step
 
 ### 1. Prepare the server
 
-Select:
-
     1) Prepare server
-
-UPD, deps --- done automatically.
-
-------------------------------------------------------------------------
 
 ### 2. Install the node
 
-Select:
-
     2) Install node
 
-You'll be asked for a moniker --- any name works.
-
+Enter moniker (or leave default).\
 Then:
 
     Apply snapshot now? [y/N]:
 
-Enter `y` --- strongly recommended for fast sync.
-
-------------------------------------------------------------------------
+Enter `y`.
 
 ### 3. Start the node
 
     3) Start node
 
-------------------------------------------------------------------------
-
 ### 4. Logs & Status
 
--   `5) Node status`\
+-   `5) Node status`
 -   `4) Node logs`
-
-------------------------------------------------------------------------
 
 ### 5. Health Check
 
-After 10--15 minutes:
-
     8) Health check
 
-All indicators must be green ✅
+Everything should be green ✅
 
 ------------------------------------------------------------------------
 
@@ -132,8 +113,6 @@ All indicators must be green ✅
 
 ------------------------------------------------------------------------
 
-# 🇷🇺 Русская версия
-
 ```{=html}
 <p align="center">
 ```
@@ -141,23 +120,25 @@ All indicators must be green ✅
 ```{=html}
 </p>
 ```
+# 🇷🇺 Русская версия
+
 ## 📌 О проекте
 
-Stable уверенно растёт и запустил новый этап тестнета.\
-Скрипт помогает быстро поднять полноценную ноду --- буквально за пару
-минут.
+Stable уверенно развивается и запустил новый этап тестнета.\
+Скрипт позволяет установить и настроить ноду за пару минут, полностью в
+автоматическом режиме.
 
 ------------------------------------------------------------------------
 
-## ✅ Требования к серверу
+## ✅ Требования
 
   Компонент   Минимум
   ----------- -----------------
-  **CPU**     4 ядра
-  **RAM**     8 GB
-  **Диск**    500 GB NVMe/SSD
-  **OS**      Ubuntu / Debian
-  **Права**   root
+  CPU         4 ядра
+  RAM         8 GB
+  Диск        500 GB NVMe/SSD
+  ОС          Ubuntu / Debian
+  Права       root
 
 ------------------------------------------------------------------------
 
@@ -169,52 +150,37 @@ wget -q -O stable.sh https://raw.githubusercontent.com/ksydoruk1508/stable/refs/
 
 ------------------------------------------------------------------------
 
-## 🚀 Пошаговая установка
+## 🚀 Установка
 
-### 1. Подготовка сервера
-
-Выбираем:
+### 1. Подготовка
 
     1) Подготовка сервера
 
-------------------------------------------------------------------------
-
 ### 2. Установка ноды
-
-Пункт:
 
     2) Установка ноды
 
-Скрипт спросит moniker --- можно оставить как есть.
-
-Далее появится:
+Введите moniker при необходимости.\
+Далее:
 
     Подтянуть снапшот сейчас? [y/N]:
 
-Пишем `y` --- синхронизация будет быстрее.
-
-------------------------------------------------------------------------
+Пишем `y`.
 
 ### 3. Запуск ноды
 
     3) Запустить ноду
 
-------------------------------------------------------------------------
+### 4. Проверка
 
-### 4. Проверка логов и статуса
-
--   `5) Статус ноды`\
+-   `5) Статус ноды`
 -   `4) Логи ноды`
 
-------------------------------------------------------------------------
-
-### 5. Проверка состояния (Health Check)
-
-Через 10--15 минут:
+### 5. Health Check
 
     8) Проверка состояния (Health check)
 
-Все галочки должны быть зелёными ✅
+Все индикаторы должны быть зелёными ✅
 
 ------------------------------------------------------------------------
 
@@ -225,7 +191,7 @@ wget -q -O stable.sh https://raw.githubusercontent.com/ksydoruk1508/stable/refs/
   Официальный сайт   https://www.stable.xyz/
   X (Twitter)        https://x.com/stable
   Discord            https://discord.com/invite/stablexyz
-  Анонс тестнета     https://x.com/stable/status/1985715183206236368
+  Анонс              https://x.com/stable/status/1985715183206236368
 
 ------------------------------------------------------------------------
 
