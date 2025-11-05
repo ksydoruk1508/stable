@@ -34,7 +34,7 @@ EOF
 # App constants (original)
 # -----------------------------
 APP_NAME="Stable"
-SERVICE_NAME="stabled"                     # ровно как у тебя
+SERVICE_NAME="stabled"                     
 BIN_PATH="/usr/bin/stabled"
 HOME_DIR="/root/.stabled"
 CHAIN_ID="stabletestnet_2201-1"
@@ -45,10 +45,10 @@ GENESIS_ZIP_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/stable_t
 RPC_CFG_ZIP_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/rpc_node_config.zip"
 SNAPSHOT_URL="https://stable-snapshot.s3.eu-central-1.amazonaws.com/snapshot.tar.lz4"
 
-# ожидаемый sha256 для genesis (как у тебя)
+# ожидаемый sha256 для genesis 
 GENESIS_SHA256_EXPECTED="66afbb6e57e6faf019b3021de299125cddab61d433f28894db751252f5b8eaf2"
 
-# peers и сетевые правки – как ты ставил
+# peers и сетевые правки
 PEERS="5ed0f977a26ccf290e184e364fb04e268ef16430@37.187.147.27:26656,128accd3e8ee379bfdf54560c21345451c7048c7@37.187.147.22:26656"
 
 # -----------------------------
@@ -83,7 +83,8 @@ tr(){
       m5) echo "Node status";;
       m6) echo "Restart node";;
       m7) echo "Remove node (binary, service, data)";;
-      m8) echo "Health check";;
+      m8) echo "Node version";;
+      m9) echo "Health check";;
       m0) echo "Exit";;
 
       prep_start)            echo "Updating APT and installing dependencies...";;
@@ -108,6 +109,9 @@ tr(){
       remove_cancel)         echo "Canceled.";;
       remove_done)           echo "Node and its logs removed.";;
       invalid_choice)        echo "Invalid choice.";;
+      ver_title)             echo "Stable Node Version";;
+      ver_bin)               echo "Binary version:";;
+      ver_fail)              echo "Failed to read binary version";;
 
       hc_title)              echo "Stable Node Health Check";;
       hc_running)            echo "Service is running";;
@@ -134,7 +138,8 @@ tr(){
       m5) echo "Статус ноды";;
       m6) echo "Рестарт ноды";;
       m7) echo "Удалить ноду (бинарь, сервис, данные)";;
-      m8) echo "Проверка состояния (Health check)";;
+      m8) echo "Версия ноды";;
+      m9) echo "Проверка состояния (Health check)";;
       m0) echo "Выход";;
 
       prep_start)            echo "Обновляю APT и ставлю зависимости...";;
@@ -159,6 +164,9 @@ tr(){
       remove_cancel)         echo "Отмена.";;
       remove_done)           echo "Нода и её логи удалены.";;
       invalid_choice)        echo "Неверный выбор.";;
+      ver_title)             echo "Версия ноды Stable";;
+      ver_bin)               echo "Версия бинаря:";;
+      ver_fail)              echo "Не удалось получить версию бинаря";;
       
       hc_title)              echo "Проверка состояния ноды Stable";;
       hc_running)            echo "Сервис запущен";;
@@ -228,7 +236,7 @@ install_node(){
   cp -f config.toml "$HOME_DIR/config/config.toml"
   cp -f app.toml "$HOME_DIR/config/app.toml"
 
-  # правки ровно как у тебя
+ 
   info "$(tr cfg_patch)"
   # config.toml
   sed -i "s/^moniker = \".*\"/moniker = \"${MONIKER}\"/" "$HOME_DIR/config/config.toml"
@@ -243,7 +251,7 @@ install_node(){
   sed -i 's|^\(\s*ws-address\s*=\s*\).*|\1"0.0.0.0:8546"|' "$HOME_DIR/config/app.toml"
   sed -i 's/^\(\s*allow-unprotected-txs\s*=\s*\).*/\1true/' "$HOME_DIR/config/app.toml"
 
-  # systemd (как у тебя, но явно под root и с chain-id)
+  # systemd
   info "$(tr svc_write)"
   tee /etc/systemd/system/${SERVICE_NAME}.service >/dev/null <<EOF
 [Unit]
@@ -318,6 +326,18 @@ remove_node(){
   rm -rf /var/log/stabled 2>/dev/null || true
 
   ok "$(tr remove_done)"
+}
+
+version_node(){
+  clear; hr
+  echo -e "${cBold}${cM}=== $(tr ver_title) ===${c0}\n"
+  if out="$("${BIN_PATH}" version 2>/dev/null)"; then
+    echo -e "${cG}✓${c0} $(tr ver_bin) ${out}"
+  elif out="$(stabled version 2>/dev/null)"; then
+    echo -e "${cG}✓${c0} $(tr ver_bin) ${out}"
+  else
+    err "$(tr ver_fail)"
+  fi
 }
 
 # -----------------------------
@@ -398,7 +418,9 @@ menu(){
   echo "6) $(tr m6)"
   echo "7) $(tr m7)"
   echo "8) $(tr m8)"
+  echo "9) $(tr m9)"
   echo "0) $(tr m0)"
+
   hr
   read -rp "> " c
   case "${c:-}" in
@@ -409,7 +431,8 @@ menu(){
     5) status_node;    pause ;;
     6) restart_node;   pause ;;
     7) remove_node;    pause ;;
-    8) health_check;   echo; pause ;;
+    8) version_node;   pause ;;
+    9) health_check;   echo; pause ;;
     0) exit 0 ;;
     *) err "$(tr invalid_choice)"; pause ;;
   esac
