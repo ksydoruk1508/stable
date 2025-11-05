@@ -2,7 +2,7 @@
 # =====================================================================
 # Stable — Installer/Manager (RU/EN), styled like Blockcast script
 # Target: Ubuntu/Debian (root required)
-# Version: 1.0.0
+# Version: 1.1.0
 # =====================================================================
 set -Eeuo pipefail
 
@@ -54,7 +54,7 @@ PEERS="5ed0f977a26ccf290e184e364fb04e268ef16430@37.187.147.27:26656,128accd3e8ee
 # -----------------------------
 # Language (RU/EN)
 # -----------------------------
-SCRIPT_VERSION="1.0.0"
+SCRIPT_VERSION="1.1.0"
 LANG="ru"
 
 choose_lang(){
@@ -83,6 +83,7 @@ tr(){
       m5) echo "Node status";;
       m6) echo "Restart node";;
       m7) echo "Remove node (binary, service, data)";;
+      m8) echo "Health check";;
       m0) echo "Exit";;
 
       prep_start)            echo "Updating APT and installing dependencies...";;
@@ -107,6 +108,19 @@ tr(){
       remove_cancel)         echo "Canceled.";;
       remove_done)           echo "Node and its logs removed.";;
       invalid_choice)        echo "Invalid choice.";;
+
+      hc_title)              echo "Stable Node Health Check";;
+      hc_running)            echo "Service is running";;
+      hc_stopped)            echo "Service is not running";;
+      hc_synced)             echo "Node is synced";;
+      hc_syncing)            echo "Node is syncing";;
+      hc_peers_ok)           echo "Connected peers:";;
+      hc_peers_low)          echo "Low peer count:";;
+      hc_disk_ok)            echo "Disk usage";;
+      hc_disk_high)          echo "High disk usage";;
+      hc_mem_ok)             echo "Memory usage";;
+      hc_mem_high)           echo "High memory usage";;
+      hc_done)               echo "Health Check Complete";;
     esac
   else
     case "$k" in
@@ -120,6 +134,7 @@ tr(){
       m5) echo "Статус ноды";;
       m6) echo "Рестарт ноды";;
       m7) echo "Удалить ноду (бинарь, сервис, данные)";;
+      m8) echo "Проверка состояния (Health check)";;
       m0) echo "Выход";;
 
       prep_start)            echo "Обновляю APT и ставлю зависимости...";;
@@ -144,6 +159,19 @@ tr(){
       remove_cancel)         echo "Отмена.";;
       remove_done)           echo "Нода и её логи удалены.";;
       invalid_choice)        echo "Неверный выбор.";;
+      
+      hc_title)              echo "Проверка состояния ноды Stable";;
+      hc_running)            echo "Сервис запущен";;
+      hc_stopped)            echo "Сервис не запущен";;
+      hc_synced)             echo "Нода синхронизирована";;
+      hc_syncing)            echo "Нода синхронизируется";;
+      hc_peers_ok)           echo "Подключённых пиров:";;
+      hc_peers_low)          echo "Мало пиров:";;
+      hc_disk_ok)            echo "Занято диска";;
+      hc_disk_high)          echo "Высокая загрузка диска";;
+      hc_mem_ok)             echo "Занято памяти";;
+      hc_mem_high)           echo "Высокая загрузка памяти";;
+      hc_done)               echo "Проверка завершена";;
     esac
   fi
 }
@@ -157,12 +185,12 @@ need(){ command -v "$1" &>/dev/null || { err "not found '$1'"; exit 1; }; }
 prepare_server(){
   info "$(tr prep_start)"
   apt update && apt upgrade -y
-  apt install -y wget tar unzip jq lz4 pv
+  apt install -y curl wget tar unzip jq lz4 pv
   ok "$(tr prep_done)"
 }
 
 install_node(){
-  need wget; need unzip; need jq
+  need wget; need unzip; need jq; need curl
 
   read -r -p "$(tr ask_moniker) " MONIKER
   MONIKER=${MONIKER:-Andante}
@@ -293,6 +321,70 @@ remove_node(){
 }
 
 # -----------------------------
+# Health Check (added)
+# -----------------------------
+health_check(){
+  need curl; need jq
+  clear; hr
+  echo -e "${cBold}${cM}=== $(tr hc_title) ===${c0}\n"
+
+  if systemctl is-active --quiet "${SERVICE_NAME}"; then
+    echo -e "${cG}✓${c0} $(tr hc_running)"
+  else
+    echo -e "${cR}✗${c0} $(tr hc_stopped)"
+    echo
+    echo -e "${cDim}systemctl status ${SERVICE_NAME}${c0}"
+    systemctl status "${SERVICE_NAME}" --no-pager || true
+    echo
+    echo -e "${cDim}journalctl -u ${SERVICE_NAME} -n 200 --no-pager${c0}"
+    journalctl -u "${SERVICE_NAME}" -n 200 --no-pager || true
+    return 1
+  fi
+
+  # Sync status
+  SYNC_STATUS=$(curl -s localhost:26657/status | jq -r '.result.sync_info.catching_up' 2>/dev/null || echo "unknown")
+  if [[ "$SYNC_STATUS" == "false" ]]; then
+    echo -e "${cG}✓${c0} $(tr hc_synced)"
+  elif [[ "$SYNC_STATUS" == "true" ]]; then
+    echo -e "${cY}⚠${c0} $(tr hc_syncing)"
+  else
+    echo -e "${cY}⚠${c0} $(tr hc_syncing) (unknown)"
+  fi
+
+  # Peers
+  PEERS=$(curl -s localhost:26657/net_info | jq -r '.result.n_peers' 2>/dev/null || echo 0)
+  if [[ "${PEERS:-0}" -ge 3 ]]; then
+    echo -e "${cG}✓${c0} $(tr hc_peers_ok) ${PEERS}"
+  else
+    echo -e "${cY}⚠${c0} $(tr hc_peers_low) ${PEERS}"
+  fi
+
+  # Disk
+  DISK_USAGE=$(df -h / | awk 'NR==2 {gsub("%","",$5); print $5}')
+  if [[ "${DISK_USAGE:-0}" -lt 80 ]]; then
+    echo -e "${cG}✓${c0} $(tr hc_disk_ok): ${DISK_USAGE}%"
+  else
+    echo -e "${cY}⚠${c0} $(tr hc_disk_high): ${DISK_USAGE}%"
+  fi
+
+  # Memory
+  MEM_AVAILABLE=$(free -m | awk 'NR==2 {print $7}')
+  MEM_TOTAL=$(free -m | awk 'NR==2 {print $2}')
+  if [[ -n "${MEM_AVAILABLE}" && -n "${MEM_TOTAL}" && "${MEM_TOTAL}" -gt 0 ]]; then
+    MEM_PERCENT=$((100 - (MEM_AVAILABLE * 100 / MEM_TOTAL)))
+  else
+    MEM_PERCENT=0
+  fi
+  if [[ "${MEM_PERCENT:-0}" -lt 80 ]]; then
+    echo -e "${cG}✓${c0} $(tr hc_mem_ok): ${MEM_PERCENT}%"
+  else
+    echo -e "${cY}⚠${c0} $(tr hc_mem_high): ${MEM_PERCENT}%"
+  fi
+
+  echo -e "\n${cBold}${cM}=== $(tr hc_done) ===${c0}"
+}
+
+# -----------------------------
 # Menu (Blockcast-style)
 # -----------------------------
 menu(){
@@ -305,6 +397,7 @@ menu(){
   echo "5) $(tr m5)"
   echo "6) $(tr m6)"
   echo "7) $(tr m7)"
+  echo "8) $(tr m8)"
   echo "0) $(tr m0)"
   hr
   read -rp "> " c
@@ -316,6 +409,7 @@ menu(){
     5) status_node;    pause ;;
     6) restart_node;   pause ;;
     7) remove_node;    pause ;;
+    8) health_check;   echo; pause ;;
     0) exit 0 ;;
     *) err "$(tr invalid_choice)"; pause ;;
   esac
