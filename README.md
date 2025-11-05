@@ -1,28 +1,3 @@
-```{=html}
-<p align="center">
-```
-`<img src="https://raw.githubusercontent.com/ksydoruk1508/stable/main/assets/stable-header.png" alt="Stable Banner" width="820">`{=html}
-```{=html}
-</p>
-```
-```{=html}
-<h1 align="center">
-```
-🌐 Stable --- Full Node`<br>`{=html}Installation & Management Guide
-```{=html}
-</h1>
-```
-```{=html}
-<p align="center">
-```
-`<img src="https://img.shields.io/badge/Testnet-Live-purple?style=for-the-badge">`{=html}
-`<img src="https://img.shields.io/badge/OS-Ubuntu%20%2F%20Debian-blue?style=for-the-badge">`{=html}
-`<img src="https://img.shields.io/badge/Setup~5min-green?style=for-the-badge">`{=html}
-```{=html}
-</p>
-```
-
-------------------------------------------------------------------------
 
 # English Version
 
@@ -112,14 +87,6 @@ Everything should be green ✅
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
-
-```{=html}
-<p align="center">
-```
-`<img src="https://raw.githubusercontent.com/ksydoruk1508/stable/main/assets/stable-rus.png" width="700">`{=html}
-```{=html}
-</p>
-```
 # 🇷🇺 Русская версия
 
 ## 📌 О проекте
@@ -160,7 +127,7 @@ wget -q -O stable.sh https://raw.githubusercontent.com/ksydoruk1508/stable/refs/
 
     2) Установка ноды
 
-Введите moniker при необходимости.\
+Введите moniker.\
 Далее:
 
     Подтянуть снапшот сейчас? [y/N]:
