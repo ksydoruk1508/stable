@@ -1,164 +1,154 @@
+# 💻💻💻 Stable --- Full Node Installation Guide
 
-# English Version
-
-## 📌 Overview
-
-Stable is rapidly expanding and entering a new testnet phase.\
-This script lets you deploy and manage a full node in minutes --- fully
-automated and beginner‑friendly.
-
-✅ Server preparation\
-✅ Binary installation\
-✅ Config patching\
-✅ Snapshot loading\
-✅ Systemd integration\
-✅ Health‑check interface
+🟣 **Activity Type:** Node\
+🟣 **Funding:** \$28M (Seed, July 2025)\
+🟣 **Investors:** Hack VC (Lead), Bitfinex, KuCoin Ventures and more\
+🟣 **Setup Time:** \~5 min\
+🟣 **Minimum Requirements:** 4 CPU / 8 RAM / 500GB SSD (NVMe
+recommended)
 
 ------------------------------------------------------------------------
 
-## ✅ System Requirements
+## 🧠 About the Project
 
-  Component     Minimum
-  ------------- -----------------
-  CPU           4 cores
-  RAM           8 GB
-  Storage       500 GB NVMe/SSD
-  OS            Ubuntu / Debian
-  Permissions   root
+**Stable** is building a rapidly growing decentralized computation
+network with strong investor backing and active development momentum.\
+The project recently launched the next phase of its public testnet, now
+allowing anyone to deploy their own node using an automated installation
+script.
+
+Although there is **no official information about rewards**, the project
+looks solid and has priority status in the node community.
 
 ------------------------------------------------------------------------
 
-## ⚡ Quick Start
+## ⚙️ Node Installation
+
+### ➡️ Step-by-Step Guide
+
+**1️⃣ Download and run the installer:**
 
 ``` bash
 wget -q -O stable.sh https://raw.githubusercontent.com/ksydoruk1508/stable/refs/heads/main/stable.sh && sudo chmod +x stable.sh && ./stable.sh
 ```
 
-------------------------------------------------------------------------
+**2️⃣ Choose your language**, then run:\
+`1) Server Preparation`
 
-## 🚀 Step‑by‑step
-
-### 1. Prepare the server
-
-    1) Prepare server
-
-### 2. Install the node
-
-    2) Install node
-
-Enter moniker (or leave default).\
-Then:
+**3️⃣ Install the node:**\
+`2) Node Installation`\
+During installation you'll see:
 
     Apply snapshot now? [y/N]:
 
-Enter `y`.
+Enter **y** for the fastest sync.
 
-### 3. Start the node
+**4️⃣ Start the node:**\
+`3) Start node`
 
-    3) Start node
+**5️⃣ Check status and logs:**\
+- `5) Node status`\
+- `4) Node logs`
 
-### 4. Logs & Status
-
--   `5) Node status`
--   `4) Node logs`
-
-### 5. Health Check
-
-    8) Health check
-
-Everything should be green ✅
+**6️⃣ Health Check:**\
+After \~10--15 minutes, go to:\
+`9) Health Check`\
+All indicators should be **green ✅**
 
 ------------------------------------------------------------------------
 
-## 🔗 Useful Links
+## 🟠 Additional Resources
 
-  --------------------------------------------------------------------------------------------
-  Resource                                   Link
-  ------------------------------------------ -------------------------------------------------
-  Website                                    https://www.stable.xyz/
-
-  X (Twitter)                                https://x.com/stable
-
-  Discord                                    https://discord.com/invite/stablexyz
-
-  Testnet Announcement                       https://x.com/stable/status/1985715183206236368
-  --------------------------------------------------------------------------------------------
+🌐 **Website:** https://www.stable.xyz/\
+💬 **X (Twitter):** https://x.com/stable\
+👾 **Discord:** https://discord.com/invite/stablexyz\
+📢 **Announcement:** https://x.com/stable/status/1985715183206236368
 
 ------------------------------------------------------------------------
 
-------------------------------------------------------------------------
-# 🇷🇺 Русская версия
-
-## 📌 О проекте
-
-Stable уверенно развивается и запустил новый этап тестнета.\
-Скрипт позволяет установить и настроить ноду за пару минут, полностью в
-автоматическом режиме.
+✍️ The Stable team does not explicitly promise rewards, but given the
+strong investor roster and rapid development pace, many node runners
+consider this testnet worthwhile.
 
 ------------------------------------------------------------------------
 
-## ✅ Требования
-
-  Компонент   Минимум
-  ----------- -----------------
-  CPU         4 ядра
-  RAM         8 GB
-  Диск        500 GB NVMe/SSD
-  ОС          Ubuntu / Debian
-  Права       root
+📢 **Community Resources:**\
+💬 Chat --- https://t.me/nod3r_team\
+🤖 Bot --- https://t.me/wiki_nod3r_bot
 
 ------------------------------------------------------------------------
 
-## ⚡ Быстрый старт
+# 💻💻💻 Stable --- установка ноды
+
+🟣 **Тип активности:** Ноды\
+🟣 **Инвестиции:** \$28M (Seed, июль 2025)\
+🟣 **Инвесторы:** Hack VC Lead, Bitfinex, KuCoin Ventures и др.\
+🟣 **Время выполнения:** \~5 мин\
+🟣 **Минимальные требования:** 4 CPU / 8 RAM / 500GB SSD (NVMe
+желательно)
+
+------------------------------------------------------------------------
+
+## 🧠 О проекте
+
+**Stable** стремительно развивается и перешёл к следующему этапу
+публичного тестнета.\
+Теперь можно развернуть свою ноду через готовый установочный скрипт.
+
+Хотя команда **не давала обещаний о наградах**, проект сильный, быстро
+растёт и заслуживает внимания.
+
+------------------------------------------------------------------------
+
+## ⚙️ Установка ноды
+
+➡️ **Пошаговая инструкция:**
+
+1️⃣ **Скачиваем скрипт:**
 
 ``` bash
 wget -q -O stable.sh https://raw.githubusercontent.com/ksydoruk1508/stable/refs/heads/main/stable.sh && sudo chmod +x stable.sh && ./stable.sh
 ```
 
-------------------------------------------------------------------------
+2️⃣ **Выбираем язык**, затем запускаем:\
+`1) Подготовка сервера`
 
-## 🚀 Установка
-
-### 1. Подготовка
-
-    1) Подготовка сервера
-
-### 2. Установка ноды
-
-    2) Установка ноды
-
-Введите moniker.\
-Далее:
+3️⃣ **Устанавливаем ноду:**\
+`2) Установка ноды`\
+Во время установки появится вопрос:
 
     Подтянуть снапшот сейчас? [y/N]:
 
-Пишем `y`.
+Пишем **y** --- быстрее синхронизируется.
 
-### 3. Запуск ноды
+4️⃣ **Запускаем ноду:**\
+`3) Запустить ноду`
 
-    3) Запустить ноду
+5️⃣ **Проверяем состояние:**\
+- `5) Статус ноды`\
+- `4) Логи ноды`
 
-### 4. Проверка
-
--   `5) Статус ноды`
--   `4) Логи ноды`
-
-### 5. Health Check
-
-    8) Проверка состояния (Health check)
-
-Все индикаторы должны быть зелёными ✅
+6️⃣ **Health Check:**\
+Через 10--15 минут:\
+`9) Проверка состояния (Health check)`\
+Все галочки должны быть зелёными ✅
 
 ------------------------------------------------------------------------
 
-## 🔗 Полезные ссылки
+## 🟠 Дополнительно
 
-  Ресурс             Ссылка
-  ------------------ -------------------------------------------------
-  Официальный сайт   https://www.stable.xyz/
-  X (Twitter)        https://x.com/stable
-  Discord            https://discord.com/invite/stablexyz
-  Анонс              https://x.com/stable/status/1985715183206236368
+🌐 **Сайт:** https://www.stable.xyz/\
+💬 **X (Twitter):** https://x.com/stable\
+👾 **Discord:** https://discord.com/invite/stablexyz\
+🔗 **Источник:** https://x.com/stable/status/1985715183206236368
 
 ------------------------------------------------------------------------
 
+✍️ Несмотря на отсутствие гарантий вознаграждений, я решил поднять хотя
+бы одну ноду --- проект перспективный и в нём явно есть потенциал.
+
+------------------------------------------------------------------------
+
+📢 **Полезные ресурсы сообщества:**\
+💬 Чат --- https://t.me/nod3r_team\
+🤖 Бот --- https://t.me/wiki_nod3r_bot
