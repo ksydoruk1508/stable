@@ -89,7 +89,7 @@ tr(){
 
       prep_start)            echo "Updating APT and installing dependencies...";;
       prep_done)             echo "Server is ready.";;
-      ask_moniker)           echo "Moniker (node name) [Andante]:";;
+      ask_moniker)           echo "Moniker (node name):";;
       bin_fetch)             echo "Downloading and installing stabled binary...";;
       init_node)             echo "Initializing node with chain-id ${CHAIN_ID}...";;
       genesis_fetch)         echo "Fetching genesis...";;
@@ -144,7 +144,7 @@ tr(){
 
       prep_start)            echo "Обновляю APT и ставлю зависимости...";;
       prep_done)             echo "Сервер готов.";;
-      ask_moniker)           echo "Монникер (имя узла) [Andante]:";;
+      ask_moniker)           echo "Монникер (имя узла):";;
       bin_fetch)             echo "Скачиваю и устанавливаю бинарь stabled...";;
       init_node)             echo "Инициализирую ноду с chain-id ${CHAIN_ID}...";;
       genesis_fetch)         echo "Скачиваю genesis...";;
@@ -201,7 +201,7 @@ install_node(){
   need wget; need unzip; need jq; need curl
 
   read -r -p "$(tr ask_moniker) " MONIKER
-  MONIKER=${MONIKER:-Andante}
+  MONIKER=${MONIKER:-StableNodeN3R}
 
   # бинарь
   info "$(tr bin_fetch)"
