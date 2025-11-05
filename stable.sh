@@ -200,24 +200,41 @@ prepare_server(){
 install_node(){
   need wget; need unzip; need jq; need curl
 
+  # 1) Определяем архитектуру и выбираем URL
+  local ARCH DL_URL
+  ARCH="$(dpkg --print-architecture 2>/dev/null || uname -m || echo unknown)"
+  case "$ARCH" in
+    amd64|x86_64)
+      DL_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/stabled-1.1.0-linux-amd64-testnet.tar.gz"
+      ;;
+    arm64|aarch64)
+      DL_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/stabled-1.1.0-linux-arm64-testnet.tar.gz"
+      ;;
+    *)
+      warn "Неизвестная архитектура: ${ARCH}. Пытаюсь использовать amd64-архив."
+      DL_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/stabled-1.1.0-linux-amd64-testnet.tar.gz"
+      ;;
+  esac
+  info "arch=${ARCH}; url=${DL_URL}"
+
   read -r -p "$(tr ask_moniker) " MONIKER
   MONIKER=${MONIKER:-StableNodeN3R}
 
-  # бинарь
+  # 2) Бинарь
   info "$(tr bin_fetch)"
   cd /root
-  wget -O stabled.tar.gz "$STABLED_URL"
+  wget -O stabled.tar.gz "$DL_URL"
   tar -xvzf stabled.tar.gz
   mv -f stabled "$BIN_PATH"
   chmod +x "$BIN_PATH"
   rm -f stabled.tar.gz
   "$BIN_PATH" version || true
 
-  # init
+  # 3) init
   info "$(tr init_node)"
   "$BIN_PATH" init "$MONIKER" --chain-id "$CHAIN_ID"
 
-  # genesis
+  # 4) genesis
   info "$(tr genesis_fetch)"
   wget -O stable_testnet_genesis.zip "$GENESIS_ZIP_URL"
   unzip -o stable_testnet_genesis.zip
@@ -229,29 +246,27 @@ install_node(){
     ok "$(tr genesis_ok)"
   fi
 
-  # готовые конфиги
+  # 5) готовые конфиги
   info "$(tr cfg_fetch)"
   wget -O rpc_node_config.zip "$RPC_CFG_ZIP_URL"
   unzip -o rpc_node_config.zip
   cp -f config.toml "$HOME_DIR/config/config.toml"
   cp -f app.toml "$HOME_DIR/config/app.toml"
 
- 
+  # 6) правки конфигов
   info "$(tr cfg_patch)"
-  # config.toml
   sed -i "s/^moniker = \".*\"/moniker = \"${MONIKER}\"/" "$HOME_DIR/config/config.toml"
   sed -i 's/^cors_allowed_origins = .*/cors_allowed_origins = ["*"]/' "$HOME_DIR/config/config.toml"
   sed -i "s|^persistent_peers = \".*\"|persistent_peers = \"${PEERS}\"|" "$HOME_DIR/config/config.toml"
   sed -i 's/^max_num_inbound_peers = .*/max_num_inbound_peers = 50/' "$HOME_DIR/config/config.toml"
   sed -i 's/^max_num_outbound_peers = .*/max_num_outbound_peers = 30/' "$HOME_DIR/config/config.toml"
 
-  # app.toml [json-rpc]
   sed -i 's/^\(\s*enable\s*=\s*\).*/\1true/' "$HOME_DIR/config/app.toml"
   sed -i 's|^\(\s*address\s*=\s*\).*|\1"0.0.0.0:8545"|' "$HOME_DIR/config/app.toml"
   sed -i 's|^\(\s*ws-address\s*=\s*\).*|\1"0.0.0.0:8546"|' "$HOME_DIR/config/app.toml"
   sed -i 's/^\(\s*allow-unprotected-txs\s*=\s*\).*/\1true/' "$HOME_DIR/config/app.toml"
 
-  # systemd
+  # 7) systemd
   info "$(tr svc_write)"
   tee /etc/systemd/system/${SERVICE_NAME}.service >/dev/null <<EOF
 [Unit]
@@ -276,7 +291,7 @@ EOF
   systemctl daemon-reload
   systemctl enable ${SERVICE_NAME}
 
-  # снапшот (как ты делал)
+  # 8) снапшот
   read -r -p "$(tr snap_ask) " use_snap
   if [[ "${use_snap,,}" =~ ^y ]]; then
     info "$(tr snap_do)"
