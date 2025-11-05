@@ -165,7 +165,7 @@ tr(){
       remove_done)           echo "Нода и её логи удалены.";;
       invalid_choice)        echo "Неверный выбор.";;
       ver_title)             echo "Версия ноды Stable";;
-      ver_bin)               echo "Версия бинаря:";;
+      ver_bin)               echo "Версия ноды:";;
       ver_fail)              echo "Не удалось получить версию бинаря";;
       
       hc_title)              echo "Проверка состояния ноды Stable";;
