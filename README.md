@@ -162,10 +162,3 @@ wget -q -O stable.sh https://raw.githubusercontent.com/ksydoruk1508/stable/refs/
 
 ------------------------------------------------------------------------
 
-```{=html}
-<p align="center">
-```
-`<img src="https://raw.githubusercontent.com/ksydoruk1508/stable/main/assets/footer.png" width="600">`{=html}
-```{=html}
-</p>
-```
