@@ -791,6 +791,66 @@ version_node(){
 }
 
 # -----------------------------
+# Health Check
+# -----------------------------
+health_check(){
+  need curl; need jq
+  clear; hr
+  echo -e "${cBold}${cM}=== $(tr hc_title) ===${c0}\n"
+
+  if systemctl is-active --quiet "${SERVICE_NAME}"; then
+    echo -e "${cG}✓${c0} $(tr hc_running)"
+  else
+    echo -e "${cR}✗${c0} $(tr hc_stopped)"
+    echo
+    echo -e "${cDim}systemctl status ${SERVICE_NAME}${c0}"
+    systemctl status "${SERVICE_NAME}" --no-pager || true
+    echo
+    echo -e "${cDim}journalctl -u ${SERVICE_NAME} -n 200 --no-pager${c0}"
+    journalctl -u "${SERVICE_NAME}" -n 200 --no-pager || true
+    return 1
+  fi
+
+  SYNC_STATUS=$(curl -s localhost:26657/status | jq -r '.result.sync_info.catching_up' 2>/dev/null || echo "unknown")
+  if [[ "$SYNC_STATUS" == "false" ]]; then
+    echo -e "${cG}✓${c0} $(tr hc_synced)"
+  elif [[ "$SYNC_STATUS" == "true" ]]; then
+    echo -e "${cY}⚠${c0} $(tr hc_syncing)"
+  else
+    echo -e "${cY}⚠${c0} $(tr hc_syncing) (unknown)"
+  fi
+
+  PEERS=$(curl -s localhost:26657/net_info | jq -r '.result.n_peers' 2>/dev/null || echo 0)
+  if [[ "${PEERS:-0}" -ge 3 ]]; then
+    echo -e "${cG}✓${c0} $(tr hc_peers_ok) ${PEERS}"
+  else
+    echo -e "${cY}⚠${c0} $(tr hc_peers_low) ${PEERS}"
+  fi
+
+  DISK_USAGE=$(df -h / | awk 'NR==2 {gsub("%","",$5); print $5}')
+  if [[ "${DISK_USAGE:-0}" -lt 80 ]]; then
+    echo -e "${cG}✓${c0} $(tr hc_disk_ok): ${DISK_USAGE}%"
+  else
+    echo -e "${cY}⚠${c0} $(tr hc_disk_high): ${DISK_USAGE}%"
+  fi
+
+  MEM_AVAILABLE=$(free -m | awk 'NR==2 {print $7}')
+  MEM_TOTAL=$(free -m | awk 'NR==2 {print $2}')
+  if [[ -n "${MEM_AVAILABLE}" && -n "${MEM_TOTAL}" && "${MEM_TOTAL}" -gt 0 ]]; then
+    MEM_PERCENT=$((100 - (MEM_AVAILABLE * 100 / MEM_TOTAL)))
+  else
+    MEM_PERCENT=0
+  fi
+  if [[ "${MEM_PERCENT:-0}" -lt 80 ]]; then
+    echo -e "${cG}✓${c0} $(tr hc_mem_ok): ${MEM_PERCENT}%"
+  else
+    echo -e "${cY}⚠${c0} $(tr hc_mem_high): ${MEM_PERCENT}%"
+  fi
+
+  echo -e "\n${cBold}${cM}=== $(tr hc_done) ===${c0}"
+}
+
+# -----------------------------
 # Menu
 # -----------------------------
 menu(){
