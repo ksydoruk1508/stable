@@ -39,7 +39,7 @@ BIN_PATH="/usr/bin/stabled"
 HOME_DIR="/root/.stabled"
 CHAIN_ID="stabletestnet_2201-1"
 
-STABLED_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/stabled-1.1.0-linux-amd64-testnet.tar.gz"
+STABLED_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/stabled-1.1.1-linux-amd64-testnet.tar.gz"
 GENESIS_ZIP_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/stable_testnet_genesis.zip"
 RPC_CFG_ZIP_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/rpc_node_config.zip"
 SNAPSHOT_URL="https://stable-snapshot.s3.eu-central-1.amazonaws.com/snapshot.tar.lz4"
