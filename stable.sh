@@ -39,7 +39,7 @@ BIN_PATH="/usr/bin/stabled"
 HOME_DIR="/root/.stabled"
 CHAIN_ID="stabletestnet_2201-1"
 
-STABLED_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/stabled-1.1.1-linux-amd64-testnet.tar.gz"
+STABLED_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/stabled-1.1.2-linux-amd64-testnet.tar.gz"
 GENESIS_ZIP_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/stable_testnet_genesis.zip"
 RPC_CFG_ZIP_URL="https://stable-testnet-data.s3.us-east-1.amazonaws.com/rpc_node_config.zip"
 SNAPSHOT_URL="https://stable-snapshot.s3.eu-central-1.amazonaws.com/snapshot.tar.lz4"
@@ -181,8 +181,8 @@ tr(){
 
       upg_title)   echo "Upgrade stabled";;
       upg_detect)  echo "Detected upgrade target from logs:";;
-      upg_enter)   echo "Enter target version (default 1.1.1):";;
-      upg_ver_ask) echo "Version to install (e.g., 1.1.1):";;
+      upg_enter)   echo "Enter target version (default 1.1.2):";;
+      upg_ver_ask) echo "Version to install (e.g., 1.1.2):";;
       upg_dl_fail) echo "Download failed";;
       upg_ex_fail) echo "Extract failed";;
       upg_done)    echo "Upgrade complete.";;
@@ -285,8 +285,8 @@ tr(){
 
       upg_title)   echo "Обновление stabled";;
       upg_detect)  echo "Найдена версия из логов:";;
-      upg_enter)   echo "Укажи целевую версию (по умолчанию 1.1.1):";;
-      upg_ver_ask) echo "Версия для установки (например, 1.1.1):";;
+      upg_enter)   echo "Укажи целевую версию (по умолчанию 1.1.2):";;
+      upg_ver_ask) echo "Версия для установки (например, 1.1.2):";;
       upg_dl_fail) echo "Ошибка загрузки";;
       upg_ex_fail) echo "Ошибка распаковки";;
       upg_done)    echo "Обновление завершено.";;
@@ -717,7 +717,7 @@ auto_upgrade(){
         | sed -n 's/.*Upgrade to v\([0-9.]\+\).*/\1/p' | tail -n1)"
   if [[ -z "$VER" ]]; then
     read -r -p "$(tr upg_enter) " VER
-    VER="${VER:-1.1.1}"
+    VER="${VER:-1.1.2}"
   else
     echo "$(tr upg_detect) v${VER}"
   fi
